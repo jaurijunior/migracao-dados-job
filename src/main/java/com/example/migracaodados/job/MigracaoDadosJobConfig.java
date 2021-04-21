@@ -6,6 +6,8 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @EnableBatchProcessing
@@ -15,9 +17,16 @@ public class MigracaoDadosJobConfig {
 	@Autowired
 	private JobBuilderFactory jobBuilderFactory;
 
-	private Job migracaoDadosJob(Step migracaoPessoaStep, Step migracaoDadosBancariosStep) {
-		return jobBuilderFactory.get("migracaoDadosJob").start(migracaoPessoaStep).next(migracaoDadosBancariosStep)
-				.incrementer(new RunIdIncrementer()).build();
+	@Bean
+	public Job migracaoDadosJob(
+			@Qualifier("migrarPessoaStep") Step migrarPessoaStep, 
+			@Qualifier("migrarDadosBancariosStep") Step migrarDadosBancariosStep) {
+		return jobBuilderFactory
+				.get("migracaoDadosJob")
+				.start(migrarPessoaStep)
+				.next(migrarDadosBancariosStep)
+				.incrementer(new RunIdIncrementer())
+				.build();
 	}
 
 }
