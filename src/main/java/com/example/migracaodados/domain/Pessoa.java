@@ -2,6 +2,8 @@ package com.example.migracaodados.domain;
 
 import java.util.Date;
 
+import org.apache.logging.log4j.util.Strings;
+
 public class Pessoa {
 
 	private int id;
@@ -47,6 +49,10 @@ public class Pessoa {
 				+ getEmail() + ", getDataNascimento()=" + getDataNascimento() + ", getIdade()=" + getIdade()
 				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
 				+ "]";
+	}
+	public boolean isValida() {
+		// TODO Auto-generated method stub
+		return !Strings.isBlank(nome) && !Strings.isBlank(email) && dataNascimento!=null;
 	}
 	
 	
